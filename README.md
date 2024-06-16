@@ -1,0 +1,2 @@
+# SimpleBank
+A golang project
