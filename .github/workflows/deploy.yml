@@ -38,8 +38,12 @@ jobs:
             REPOSITORY: simple_bank
             IMAGE_TAG: ${{ github.sha }}
           run: |
-            docker build -t $REGISTRY/$REPOSITORY -t latest .
+            docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG -t $REGISTRY/$REPOSITORY:latest .
             docker push -a $REGISTRY/$REPOSITORY
+
+        - name: Update KubeConfig
+          run: aws eks update-kubeconfig --name simple-bank --region ap-south-1
+
         - name: Deploy Image to AWS Eks
           run: |
             kubectl apply -f eks/aws-auth.yaml
